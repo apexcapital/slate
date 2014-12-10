@@ -1,13 +1,11 @@
 ---
-title: API Reference
+title: Mobile App API Reference
 
 language_tabs:
   - shell
-  - ruby
-  - python
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
+  - <a href='#'>API &copy; 2014 Apex Capital Corp</a>
   - <a href='http://github.com/tripit/slate'>Documentation Powered by Slate</a>
 
 includes:
@@ -18,63 +16,50 @@ search: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Welcome to the Apex Mobile App API! You can use our API to discover any mobile app endpoints you might need. Our endpoints are very loosely based on REST API. Ok not really. The endpoints are currently backed by Struts 2 actions. Hopefully
+in the future we'll transition to a pure REST API.
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
-
-This example API documentation page was created with [Slate](http://github.com/tripit/slate). Feel free to edit it and use it as a base for your own API's documentation.
+Examples provided are for curl usage. You can view code examples in the dark area to the right.
 
 # Authentication
 
-> To authorize, use this code:
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-```
+## Login
 
 ```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
+curl "https://clients.apexcapitalcorp.com/m3clients/mobile/mobileLogin.action" \
+  -d username=apextest \
+  -d password=asdf1234
 ```
 
-> Make sure to replace `meowmeowmeow` with your API key.
+> EXAMPLE RESPONSE:
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+```json
+{
+    "accessedFrom": null,
+    "name": "Apple Test User",
+    "password": "",
+    "requiredDocs": [ ],
+    "sessionId": "NTU2MDIyNg==",
+    "username": "appletest"
+}
+```
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+This endpoint returns a token based on successful authentication with Apex's servers. This token (currently referred to as sessionId) will be used with subsequent requests to identify the current signed in user.
 
-`Authorization: meowmeowmeow`
+### HTTP Request
 
-<aside class="notice">
-You must replace `meowmeowmeow` with your personal API key.
-</aside>
+`GET https://clients.apexcapitalcorp.com/m3clients/mobile/mobileLogin.action`
+
+### Query Parameters
+
+Parameter | Required | Description
+--------- | -------- | -----------
+username | true | your Apex username
+password | true | your Apex password
 
 # Kittens
 
 ## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
 
 ```shell
 curl "http://example.com/api/kittens"
@@ -121,20 +106,6 @@ Remember — a happy kitten is an authenticated kitten!
 
 ## Get a Specific Kitten
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
 ```shell
 curl "http://example.com/api/kittens/3"
   -H "Authorization: meowmeowmeow"
@@ -165,4 +136,3 @@ This endpoint retrieves a specific kitten.
 Parameter | Description
 --------- | -----------
 ID | The ID of the cat to retrieve
-
